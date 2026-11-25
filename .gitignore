@@ -1,0 +1,4 @@
+.env
+.trial/
+node_modules/
+.DS_Store
