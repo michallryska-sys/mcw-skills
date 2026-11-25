@@ -62,7 +62,67 @@ function apiKey() {
   process.exit(2);
 }
 
+const SECRETS = [
+  [/\bsk-or-v1-[A-Za-z0-9]{20,}/, 'OpenRouter key'],
+  [/\bsk-ant-[A-Za-z0-9_-]{20,}/, 'Anthropic key'],
+  [/\bsk-(?:proj-|live_|test_)?[A-Za-z0-9_-]{24,}/, 'API key (sk-...)'],
+  [/\bgh[pousr]_[A-Za-z0-9]{30,}|\bgithub_pat_[A-Za-z0-9_]{30,}/, 'GitHub token'],
+  [/\bAKIA[0-9A-Z]{16}\b/, 'AWS key'],
+  [/\bAIza[0-9A-Za-z_-]{30,}|\bAQ\.[A-Za-z0-9_-]{30,}/, 'Google key'],
+  [/\bEAA[A-Za-z0-9]{30,}/, 'Meta token'],
+  [/\bre_[A-Za-z0-9]{20,}/, 'Resend key'],
+  [/\bxox[abpr]-[A-Za-z0-9-]{10,}/, 'Slack token'],
+  [/-----BEGIN [A-Z ]*PRIVATE KEY-----/, 'private key'],
+  [/\beyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}/, 'JWT'],
+  [/\b(?:postgres(?:ql)?|mysql|mariadb|mongodb(?:\+srv)?|redis|amqp):\/\/[^\s:@/]+:[^\s@/]+@/i, 'database URL with password'],
+  [/\bBearer\s+[A-Za-z0-9._~+/-]{20,}/, 'Bearer token'],
+  [/\b(?:password|passwd|secret|api[_-]?key|token)\s*[:=]\s*["']?[^\s"']{6,}/i, 'password or key in text'],
+];
+const PERSONAL = [
+  [/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/, 'email'],
+  [/\+\d{1,3}[\s-]?\(?\d{2,4}\)?[\s-]?\d{3}[\s-]?\d{3,4}\b/, 'phone number'],
+  [/\b[A-Z]{2}\d{2}(?:\s?[A-Z0-9]{4}){3,7}(?:\s?[A-Z0-9]{1,4})?\b/, 'IBAN', (m) => ibanValid(m)],
+];
+
+function ibanValid(s) {
+  const t = s.replace(/\s/g, '');
+  const r = (t.slice(4) + t.slice(0, 4)).replace(/[A-Z]/g, (c) => String(c.charCodeAt(0) - 55));
+  let z = 0;
+  for (const ch of r) z = (z * 10 + Number(ch)) % 97;
+  return z === 1;
+}
+
+function scan(text, patterns) {
+  const hits = [];
+  text.split('\n').forEach((line, i) => {
+    for (const [re, what, check] of patterns) {
+      for (const m of line.matchAll(new RegExp(re.source, re.flags + 'g'))) {
+        if (check && !check(m[0])) continue;
+        hits.push(`line ${i + 1}: ${what} (${m[0].slice(0, 4)}...)`);
+      }
+    }
+  });
+  return hits;
+}
+
+// Everything sent out passes here first. Secrets can never be overridden; personal data only with --allow-personal.
+function guard(messages) {
+  const secrets = []; const personal = [];
+  for (const m of messages) {
+    const where = m.role === 'system' ? 'instructions' : 'brief';
+    secrets.push(...scan(m.content, SECRETS).map((h) => `${where}, ${h}`));
+    if (!flag('allow-personal')) personal.push(...scan(m.content, PERSONAL).map((h) => `${where}, ${h}`));
+  }
+  if (!secrets.length && !personal.length) return null;
+  let s = 'council: STOPPED, nothing was sent.\n';
+  if (secrets.length) s += 'Secrets (never send these, remove them from the brief):\n  ' + [...new Set(secrets)].join('\n  ') + '\n';
+  if (personal.length) s += 'Personal data (remove it, or if it is the user\'s own and truly needed, add --allow-personal):\n  ' + [...new Set(personal)].join('\n  ') + '\n';
+  return s;
+}
+
 async function call(model, messages, key) {
+  const blocked = guard(messages);
+  if (blocked) throw new Error(blocked);
   const t0 = Date.now();
   const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
@@ -86,6 +146,10 @@ function lineUp() {
 }
 
 async function run(members, messagesFor, out, suffix) {
+  for (const m of members) {
+    const blocked = guard(messagesFor(m));
+    if (blocked) { console.error(blocked); process.exit(3); }
+  }
   const key = apiKey();
   const results = await Promise.allSettled(members.map((m) => call(m.id, messagesFor(m), key)));
   let total = 0;

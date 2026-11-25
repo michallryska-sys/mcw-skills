@@ -62,7 +62,11 @@ The other models cannot see this conversation or any files. Write `brief.md` so 
 - **Do not put your own opinion or the answer you lean towards into it.** A model given a ready
   answer tends to confirm it. The whole value of the council is independence.
 - **Never include** passwords, API keys, tokens or other people's personal data. The brief goes to
-  OpenRouter and to the companies that run the models.
+  OpenRouter and to the companies that run the models. **The script enforces this:** before
+  sending, it scans everything going out and exits with code 3, sending nothing, if it finds a
+  key, token, password, database URL or private key (these can never be allowed), or an email,
+  phone number or IBAN (allowed only with `--allow-personal`, and only when it is the user's own
+  and truly needed). On exit 3, fix the brief and run again; never add the flag on your own.
 
 Run folder: `.council/<YYYYMMDD-HHMM>-<short-name>/` in the current project. Save the brief there as
 `brief.md` (UTF-8). The record stays, so you can always look up who claimed what.
