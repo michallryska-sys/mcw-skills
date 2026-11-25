@@ -1,0 +1,13 @@
+{
+  "name": "mcw-skills",
+  "description": "Small, practical Claude Code skills that answer in your language: /trial, /review-replies, /instagram-post.",
+  "version": "1.1.0",
+  "author": {
+    "name": "MCW One Solutions",
+    "url": "https://mcwonesolutions.com"
+  },
+  "homepage": "https://github.com/michallryska-sys/mcw-skills",
+  "repository": "https://github.com/michallryska-sys/mcw-skills",
+  "license": "MIT AND Apache-2.0",
+  "keywords": ["claude-code", "skills", "slovak", "decision-making", "reviews", "instagram"]
+}

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "mcw-skills",
+  "description": "Small, practical Claude Code skills that answer in your language.",
+  "owner": {
+    "name": "MCW One Solutions",
+    "url": "https://mcwonesolutions.com"
+  },
+  "plugins": [
+    {
+      "name": "mcw-skills",
+      "description": "/trial puts an idea on trial with a small jury, /review-replies drafts replies to public reviews, /instagram-post publishes to Instagram through the Meta Graph API.",
+      "source": "./",
+      "category": "productivity",
+      "author": {
+        "name": "MCW One Solutions",
+        "url": "https://mcwonesolutions.com"
+      },
+      "homepage": "https://github.com/michallryska-sys/mcw-skills"
+    }
+  ]
+}

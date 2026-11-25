@@ -11,20 +11,36 @@ language you write in.
 
 ## Install
 
-Copy the skills you want into your personal skills folder:
+**As a Claude Code plugin** (recommended, gets updates):
+
+```
+/plugin marketplace add michallryska-sys/mcw-skills
+/plugin install mcw-skills@mcw-skills
+```
+
+Installed as a plugin, the skills show up as `/mcw-skills:trial`, `/mcw-skills:review-replies` and
+`/mcw-skills:instagram-post`.
+
+**One command**, copies the skills into `~/.claude/skills` (keeps an existing `.env`):
+
+```powershell
+# Windows (PowerShell)
+irm https://raw.githubusercontent.com/michallryska-sys/mcw-skills/main/install.ps1 | iex
+```
+
+```bash
+# macOS / Linux
+curl -fsSL https://raw.githubusercontent.com/michallryska-sys/mcw-skills/main/install.sh | sh
+```
+
+Only some skills: `... | sh -s -- trial review-replies`, or on Windows
+`& ([scriptblock]::Create((irm https://raw.githubusercontent.com/michallryska-sys/mcw-skills/main/install.ps1))) trial review-replies`.
+
+**By hand:**
 
 ```bash
 git clone https://github.com/michallryska-sys/mcw-skills
 cp -r mcw-skills/skills/trial ~/.claude/skills/
-cp -r mcw-skills/skills/review-replies ~/.claude/skills/
-cp -r mcw-skills/skills/instagram-post ~/.claude/skills/
-```
-
-Or paste this into Claude Code:
-
-```
-https://github.com/michallryska-sys/mcw-skills
-Install the skills from this repo into ~/.claude/skills, then confirm they show up.
 ```
 
 `instagram-post` needs Node 18+ and a one-time Meta app setup, described in its `SKILL.md`. Its
@@ -43,6 +59,11 @@ credentials go into `skills/instagram-post/.env` (see `.env.example`), which git
 
 Skilly odpovedajú v jazyku, v ktorom píšeš. Stačí `/trial` a zadanie po slovensky: celý súd,
 porota aj verdikt budú po slovensky.
+
+## Contributing
+
+Run `node scripts/check.mjs` before you push. It checks every `SKILL.md` and scans the repo for
+tokens and `.env` files; GitHub runs the same check on every push.
 
 ## Credits and licenses
 
