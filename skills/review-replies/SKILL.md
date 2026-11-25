@@ -9,7 +9,7 @@ description: >-
   pasted text or an export; never publishes anything.
 license: Apache-2.0
 metadata:
-  source: "https://github.com/OWNER/mcw-skills"
+  source: "https://github.com/michallryska-sys/mcw-skills"
   adapted-from: "anthropics/knowledge-work-plugins, small-business/review-reputation (Apache-2.0)"
   version: "1.0.0"
 ---

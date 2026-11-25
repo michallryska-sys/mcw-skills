@@ -14,7 +14,7 @@ language you write in.
 Copy the skills you want into your personal skills folder:
 
 ```bash
-git clone https://github.com/OWNER/mcw-skills
+git clone https://github.com/michallryska-sys/mcw-skills
 cp -r mcw-skills/skills/trial ~/.claude/skills/
 cp -r mcw-skills/skills/review-replies ~/.claude/skills/
 cp -r mcw-skills/skills/instagram-post ~/.claude/skills/
@@ -23,7 +23,7 @@ cp -r mcw-skills/skills/instagram-post ~/.claude/skills/
 Or paste this into Claude Code:
 
 ```
-https://github.com/OWNER/mcw-skills
+https://github.com/michallryska-sys/mcw-skills
 Install the skills from this repo into ~/.claude/skills, then confirm they show up.
 ```
 

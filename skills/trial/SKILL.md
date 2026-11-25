@@ -11,7 +11,7 @@ description: >-
 argument-hint: "[--full] <the idea, plan or claim>"
 license: MIT
 metadata:
-  source: "https://github.com/OWNER/mcw-skills"
+  source: "https://github.com/michallryska-sys/mcw-skills"
   inspired-by: "https://github.com/alexyc9381/court-skill (MIT)"
   version: "1.0.0"
 ---

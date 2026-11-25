@@ -10,7 +10,7 @@ description: >-
   reading feeds or analytics.
 license: MIT
 metadata:
-  source: "https://github.com/OWNER/mcw-skills"
+  source: "https://github.com/michallryska-sys/mcw-skills"
   version: "1.0.0"
 ---
 
