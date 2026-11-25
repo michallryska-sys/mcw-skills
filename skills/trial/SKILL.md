@@ -54,6 +54,15 @@ Keep the case file in memory and paste it into the prompts. Write nothing to dis
 
 The charge is always: **"The case fails as stated: it should not go ahead the way it is described."**
 
+## Step 1b: confirm the case file (required, before the trial)
+
+One wrong fact in the case file decides the whole trial, and you will not spot it because you wrote it. So before anything else:
+
+1. Show the user a **summary of the facts in the case file**: a numbered list of everything the trial will treat as true (dates, numbers, the state of the business, what exists and what is only planned), and below it a short list of what the case file is missing.
+2. Ask: "Are these facts right? Anything to fix or add?" and **end your reply**.
+3. Continue **only after the user explicitly confirms**. If they correct something, update the case file and show the summary again.
+4. Launch no prosecutor, defense or juror before that confirmation. If the user is not there to confirm, do not run the trial at all.
+
 ## Step 2: prosecutor and defense (one wave, 2 parallel calls)
 
 In a single message, make 2 Agent tool calls (`subagent_type: general-purpose`, `description:
