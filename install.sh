@@ -5,7 +5,7 @@
 set -eu
 REPO="https://github.com/michallryska-sys/mcw-skills"
 DEST="${CLAUDE_SKILLS_DIR:-$HOME/.claude/skills}"
-ALL="trial review-replies instagram-post"
+ALL="trial council review-replies instagram-post"
 WANT="${*:-$ALL}"
 
 command -v git >/dev/null 2>&1 || { echo "mcw-skills: git is required" >&2; exit 1; }

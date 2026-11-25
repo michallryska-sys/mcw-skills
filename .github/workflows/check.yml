@@ -12,4 +12,5 @@ jobs:
           node-version: 20
       - run: node scripts/check.mjs
       - run: node --check skills/instagram-post/scripts/ig.mjs
+      - run: node --check skills/council/council.mjs
       - run: sh -n install.sh

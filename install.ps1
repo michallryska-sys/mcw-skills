@@ -5,7 +5,7 @@
 param([Parameter(ValueFromRemainingArguments = $true)][string[]]$Skills)
 $ErrorActionPreference = 'Stop'
 $Repo = 'https://github.com/michallryska-sys/mcw-skills'
-$All = @('trial', 'review-replies', 'instagram-post')
+$All = @('trial', 'council', 'review-replies', 'instagram-post')
 if (-not $Skills -or $Skills.Count -eq 0) { $Skills = $All }
 $Dest = if ($env:CLAUDE_SKILLS_DIR) { $env:CLAUDE_SKILLS_DIR } else { Join-Path $HOME '.claude\skills' }
 

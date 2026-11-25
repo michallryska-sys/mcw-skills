@@ -6,6 +6,7 @@ language you write in.
 | Skill | What it does | Sub-agents |
 |---|---|---|
 | [`/trial`](skills/trial/SKILL.md) | Puts an idea on trial: a prosecutor and a defense argue, 3 jurors (5 with `--full`) vote on their own, a judge reads the verdict and what would flip it. For when Claude just agrees with you. | 5 (7) |
+| [`/council`](skills/council/SKILL.md) | A second (third, fourth) opinion: sends your question to Gemini, GPT and Perplexity at once through OpenRouter, Claude answers independently too, then shows where they agree, where they disagree and what each one missed. `--debate` adds a round where they critique each other. Needs an [OpenRouter](https://openrouter.ai) key; a round costs a few cents. | 0 |
 | [`/review-replies`](skills/review-replies/SKILL.md) | Drafts replies to Google / Facebook reviews in the owner's voice, under 60 words each, approved one at a time. Never publishes. | 0 |
 | [`/instagram-post`](skills/instagram-post/SKILL.md) | Publishes an image + caption to Instagram through the Meta Graph API. Self-hosted, zero dependencies, always asks before posting. | 0 |
 
@@ -18,7 +19,7 @@ language you write in.
 /plugin install mcw-skills@mcw-skills
 ```
 
-Installed as a plugin, the skills show up as `/mcw-skills:trial`, `/mcw-skills:review-replies` and
+Installed as a plugin, the skills show up as `/mcw-skills:trial`, `/mcw-skills:council`, `/mcw-skills:review-replies` and
 `/mcw-skills:instagram-post`.
 
 **One command**, copies the skills into `~/.claude/skills` (keeps an existing `.env`):
@@ -43,6 +44,10 @@ git clone https://github.com/michallryska-sys/mcw-skills
 cp -r mcw-skills/skills/trial ~/.claude/skills/
 ```
 
+`council` needs Node 18+ and an OpenRouter key in `OPENROUTER_API_KEY`
+(Windows: `setx OPENROUTER_API_KEY "sk-or-..."`, macOS/Linux: `export` it in your shell profile).
+You pay OpenRouter directly for what you use; the skill never sees or stores your key anywhere else.
+
 `instagram-post` needs Node 18+ and a one-time Meta app setup, described in its `SKILL.md`. Its
 credentials go into `skills/instagram-post/.env` (see `.env.example`), which git ignores.
 
@@ -51,6 +56,8 @@ credentials go into `skills/instagram-post/.env` (see `.env.example`), which git
 ```
 /trial Quit my job and open a coffee truck. I have €12,000 saved and a spot at the Saturday market.
 /trial --full Raise our website package price from €900 to €1,400.
+/council Is this sample size enough to detect a 10% difference? <design, numbers>
+/council --debate Review this experiment protocol for flaws: <protocol>
 /review-replies <paste the reviews>
 /instagram-post Post this photo with a short caption about today's catch: <image URL>
 ```
